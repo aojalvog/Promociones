@@ -2,13 +2,18 @@ package com.springbatch.proyectoPromociones.reader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +25,51 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class Reader {
 
+	/**
+	 * Ubicación del Excel actual
+	 */
+
+	public static final String EXCEL_ACTUAL = "C:\\Users\\6003036\\Documents\\proyectos de Eclipse\\Promociones\\src\\main\\resources\\terminales.xlsx";
+
+	/**
+	 * Bean para crear un lector de elementos a partir de un archivo Excel.
+	 *
+	 * @return Lector de elementos de tipo Productos
+	 * @throws Exception si ocurre algún error durante la lectura del archivo Excel
+	 */
 	@Bean
-	ArrayList<Productos> itemReader() throws Exception {
+	ItemReader<Productos> itemReader() throws Exception {
+
+		return new ItemReader<Productos>() {
+
+			private List<Productos> productos = excelReader();
+
+			private int currentIndex = 0;
+
+			@Override
+			public Productos read()
+					throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+				if (currentIndex < productos.size()) {
+					return productos.get(currentIndex++);
+				} else {
+					return null;
+				}
+			}
+		};
+	}
+
+	/**
+	 * Método para leer datos de un archivo Excel y convertirlos en una lista de
+	 * productos.
+	 *
+	 * @return Lista de productos leídos desde el archivo Excel
+	 * @throws Exception si ocurre algún error durante la lectura del archivo Excel
+	 */
+	@Bean
+	ArrayList<Productos> excelReader() throws Exception {
 		log.info(" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		log.info("LEYENDO XLSX CONVERGENTES");
-		File excelFile = new File("terminales.xlsx");
+		File excelFile = new File(EXCEL_ACTUAL);
 		FileInputStream fis = new FileInputStream(excelFile);
 
 		// we create an XSSF Workbook object for our XLSX Excel File
@@ -52,20 +97,19 @@ public class Reader {
 
 				switch (numColumn) {
 				case 0: {
-					xlxsActual.setId(cell.toString().replace(".0", ""));
-					;
+					xlxsActual.setID(cell.toString().replace(".0", ""));
 					break;
 				}
 				case 1: {
-					xlxsActual.setName(cell.toString());
+					xlxsActual.setNAME(cell.toString());
 					break;
 				}
 				case 2: {
-					xlxsActual.setDescription(cell.toString().replace(".0", ""));
+					xlxsActual.setDESCRIPTION(cell.toString().replace(".0", ""));
 					break;
 				}
 				case 3: {
-					xlxsActual.setCode(cell.toString().replace(".0", ""));
+					xlxsActual.setCODE(cell.toString().replace(".0", ""));
 					break;
 				}
 				default: {
