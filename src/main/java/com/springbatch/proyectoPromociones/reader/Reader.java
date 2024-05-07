@@ -97,19 +97,19 @@ public class Reader {
 
 				switch (numColumn) {
 				case 0: {
-					xlxsActual.setID(cell.toString().replace(".0", ""));
+					xlxsActual.setId(cell.toString().replace(".0", ""));
 					break;
 				}
 				case 1: {
-					xlxsActual.setNAME(cell.toString());
+					xlxsActual.setName(cell.toString());
 					break;
 				}
 				case 2: {
-					xlxsActual.setDESCRIPTION(cell.toString().replace(".0", ""));
+					xlxsActual.setDescription(cell.toString().replace(".0", ""));
 					break;
 				}
 				case 3: {
-					xlxsActual.setCODE(cell.toString().replace(".0", ""));
+					xlxsActual.setCode(cell.toString().replace(".0", ""));
 					break;
 				}
 				default: {

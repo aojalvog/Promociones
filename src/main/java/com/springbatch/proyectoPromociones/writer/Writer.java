@@ -26,9 +26,9 @@ public class Writer {
 	 */
 
 	@Bean
-	FlatFileItemWriter<Productos> itemWriter() throws Exception {
+	FlatFileItemWriter<Productos> itemWriter() {
 		BeanWrapperFieldExtractor<Productos> fieldExtractor = new BeanWrapperFieldExtractor<>();
-		fieldExtractor.setNames(new String[] { "ID", "NAME", "DESCRIPTION", "CODE" });
+		fieldExtractor.setNames(new String[] { "id", "name", "description", "code" });
 		fieldExtractor.afterPropertiesSet();
 
 		DelimitedLineAggregator<Productos> lineAggregator = new DelimitedLineAggregator<>();
