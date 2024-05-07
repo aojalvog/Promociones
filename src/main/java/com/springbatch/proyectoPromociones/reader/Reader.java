@@ -2,7 +2,7 @@ package com.springbatch.proyectoPromociones.reader;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.text.ParseException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
+import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -35,10 +36,12 @@ public class Reader {
 	 * Bean para crear un lector de elementos a partir de un archivo Excel.
 	 *
 	 * @return Lector de elementos de tipo Productos
-	 * @throws Exception si ocurre algún error durante la lectura del archivo Excel
+	 * @throws IOException
+	 * @throws Exception   si ocurre algún error durante la lectura del archivo
+	 *                     Excel
 	 */
 	@Bean
-	ItemReader<Productos> itemReader() throws Exception {
+	ItemReader<Productos> itemReader() throws ParseException, IOException {
 
 		return new ItemReader<Productos>() {
 
@@ -47,8 +50,7 @@ public class Reader {
 			private int currentIndex = 0;
 
 			@Override
-			public Productos read()
-					throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+			public Productos read() throws Exception, UnexpectedInputException, NonTransientResourceException {
 				if (currentIndex < productos.size()) {
 					return productos.get(currentIndex++);
 				} else {
@@ -63,10 +65,12 @@ public class Reader {
 	 * productos.
 	 *
 	 * @return Lista de productos leídos desde el archivo Excel
-	 * @throws Exception si ocurre algún error durante la lectura del archivo Excel
+	 * @throws IOException
+	 * @throws Exception   si ocurre algún error durante la lectura del archivo
+	 *                     Excel
 	 */
 	@Bean
-	ArrayList<Productos> excelReader() throws Exception {
+	ArrayList<Productos> excelReader() throws ParseException, IOException {
 		log.info(" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		log.info("LEYENDO XLSX CONVERGENTES");
 		File excelFile = new File(EXCEL_ACTUAL);
@@ -80,7 +84,7 @@ public class Reader {
 		// we iterate on rows
 		Iterator<Row> rowIt = sheet.iterator();
 		ArrayList<Productos> mapRetorno = new ArrayList<>();
-		Productos xlxsActual = new Productos();
+		Productos xlxsActual;
 		int numColumn = 0;
 
 		Row row = rowIt.next();// Saltar Cabecera
