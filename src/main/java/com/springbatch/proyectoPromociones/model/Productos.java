@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Productos {
 
-	private Long id;
+	private String id;
 	private String name;
 	private String description;
-	private Long code;
+	private String code;
 
 }
