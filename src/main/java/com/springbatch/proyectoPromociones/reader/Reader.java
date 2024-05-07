@@ -16,14 +16,14 @@ import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import com.springbatch.proyectoPromociones.model.Productos;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
+@Configuration
 public class Reader {
 
 	/**
